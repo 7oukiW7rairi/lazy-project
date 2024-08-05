@@ -1,0 +1,36 @@
+<lifecycles>
+  <lifecycle>
+    <id>download-dependencies</id>
+    <phases>
+      <phase>
+        <id>process-resources</id>
+        <executions>
+          <!--<execution>
+            <goals>
+              <goal>org.apache.maven.plugins:maven-shade-plugin:shade</goal>
+            </goals>
+            <configuration>
+              <shadedArtifactAttached>true</shadedArtifactAttached>
+              <transformers>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                  <mainClass>org.lazy.web.integration.LazyMainApplication</mainClass>
+                </transformer>
+              </transformers>
+            </configuration>
+          </execution>-->
+          <execution>
+            <goals>
+              <goal>org.apache.maven.plugins:maven-dependency-plugin:copy-dependencies</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>
+                ${project.build.directory}/libs
+              </outputDirectory>
+            </configuration>
+          </execution>
+        </executions>
+      </phase>
+    </phases>
+  </lifecycle>
+</lifecycles>

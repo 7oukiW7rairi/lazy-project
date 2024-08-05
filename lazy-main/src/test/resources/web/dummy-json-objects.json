@@ -1,0 +1,11 @@
+[ {
+  "id" : 1,
+  "name" : "dummy-1",
+  "valid" : true,
+  "dateTime" : "2023-12-02T17:49:37.332Z"
+}, {
+  "id" : 2,
+  "name" : "dummy-2",
+  "valid" : false,
+  "dateTime" : "2023-10-27T17:49:37.332Z"
+} ]
