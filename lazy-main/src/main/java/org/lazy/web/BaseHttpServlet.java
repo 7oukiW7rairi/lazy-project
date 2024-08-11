@@ -25,8 +25,6 @@ public class BaseHttpServlet extends HttpServlet {
             .map(ServiceLoader.Provider::get)
             .collect(Collectors.toList());
 
-    protected static final String APP_CONTEXT = "APP_CONTEXT";
-
     private HandlerMapping handlerMapping;
 
     public BaseHttpServlet() {
@@ -37,7 +35,7 @@ public class BaseHttpServlet extends HttpServlet {
     public void init() {
         handlerMapping = new HandlerMapping(this.getClass().getDeclaredMethods());
         // TODO check how to handle null WebApplicationContext
-        WebApplicationContext applicationContext = (WebApplicationContext) getServletContext().getAttribute(APP_CONTEXT);
+        WebApplicationContext applicationContext = (WebApplicationContext) getServletContext().getAttribute(WebProperties.APP_CONTEXT_NAME.getName());
         if(applicationContext != null) {
             applicationContext.getWebComponent(this);
         }

@@ -23,10 +23,10 @@ public class AnnotatedComponentProcessor {
     private final Set<ComponentDefinition> definitions = new HashSet<>();
     private final Map<String, ClassWriter> classWriterMap = new HashMap<>();
 
-    public AnnotatedComponentProcessor(ProcessingEnvironment processingEnv, Set<? extends Element> annotatedComponents) {
-        AnnotatedComponentTransformer<Element, ComponentDefinition> annotatedElementTransformer = new AnnotatedElementTransformer(processingEnv);
+    public AnnotatedComponentProcessor(ProcessingEnvironment processingEnv, Set<? extends Element> annotatedComponents, Set<? extends Element> namedElements) {
+        AnnotatedComponentTransformer<Element, ComponentDefinition> annotatedElementTransformer = new AnnotatedElementTransformer(processingEnv, namedElements);
         AnnotatedComponentTransformer<Element, ComponentDefinition> annotatedRepositoryTransformer = new AnnotatedRepositoryElementTransformer(processingEnv);
-        AnnotatedComponentTransformer<Element, List<ComponentDefinition>> configElementTransformer = new AnnotatedConfigElementTransformer(processingEnv);
+        AnnotatedComponentTransformer<Element, List<ComponentDefinition>> configElementTransformer = new AnnotatedConfigElementTransformer(processingEnv, namedElements);
         for (Element element : annotatedComponents) {
             if (element.getAnnotation(Configuration.class) != null) {
                 definitions.add(annotatedElementTransformer.transform(element));

@@ -11,6 +11,8 @@ import org.lazy.common.Prototype;
 import org.lazy.common.SetterDefinition;
 import org.lazy.jpa.Repository;
 import org.lazy.web.annotation.Controller;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.inject.Inject;
@@ -27,11 +29,14 @@ import java.util.stream.Collectors;
 
 import static java.util.function.Predicate.not;
 import static javax.lang.model.element.Modifier.ABSTRACT;
+import static org.lazy.common.StreamUtils.rethrowBiFunction;
 
 public class AnnotatedElementTransformer extends AbstractAnnotatedElementTransformer<ComponentDefinition> {
 
-    public AnnotatedElementTransformer(ProcessingEnvironment processingEnv) {
-        super(processingEnv);
+    private static final Logger logger = LoggerFactory.getLogger(AnnotatedElementTransformer.class);
+
+    public AnnotatedElementTransformer(ProcessingEnvironment processingEnv, Set<? extends Element> namedElements) {
+        super(processingEnv, namedElements);
     }
 
     @Override
@@ -51,8 +56,9 @@ public class AnnotatedElementTransformer extends AbstractAnnotatedElementTransfo
             definition.setConstructor(new ConstructorDefinition(
                     constructorParamTypes.stream().map(TypeMirror::toString).collect(Collectors.toList()),
                     Collections.emptyList()));
+            
             definition.addDependencies(constructorParamTypes.stream()
-                    .map(this::getDependencyNameFromParameter).collect(Collectors.toList()));
+                    .map(typeMirror -> parameterDependencyName(constructor.getSimpleName().toString(), typeMirror, component.getSimpleName().toString())).collect(Collectors.toList()));
         } else {
             //throw new RuntimeException("No class constructor with @Inject annotation");
         }
@@ -64,10 +70,13 @@ public class AnnotatedElementTransformer extends AbstractAnnotatedElementTransfo
         definition.setSetters(setters.stream()
                 .map(method -> new SetterDefinition(method.toString(),
                         method.getParameterTypes().get(0).toString())).collect(Collectors.toList()));
-        definition.addDependencies(setters.stream()
+        for (ExecutableType setter : setters) {
+            definition.addDependency(parameterDependencyName(setter.toString(), setter.getParameterTypes().get(0), component.getSimpleName().toString()));
+        }
+        /* definition.addDependencies(setters.stream()
                 .map(method -> method.getParameterTypes().get(0))
                 .map(this::getDependencyNameFromParameter)
-                .collect(Collectors.toList()));
+                .collect(Collectors.toList())); */
         if (definition.getComponentProxy() == ComponentProxy.TRANSACTIONAL) {
             definition.addDependency("org.lazy.jpa.TransactionManager");
         }

@@ -2,6 +2,9 @@ package org.lazy.app;
 
 import java.util.Collections;
 import java.util.List;
+
+import javax.inject.Named;
+
 import org.lazy.web.HttpMethod;
 import org.lazy.web.Response;
 import org.lazy.web.annotation.Controller;
@@ -11,9 +14,10 @@ import org.lazy.web.annotation.PathVariable;
 
 @Controller({"/Test"})
 public class TestController {
+   
    private TestEntityRepository testEntityRepository;
 
-   public TestController(TestEntityRepository testEntityRepository) {
+   public TestController(@Named("test") TestEntityRepository testEntityRepository) {
       this.testEntityRepository = testEntityRepository;
    }
 

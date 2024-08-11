@@ -16,8 +16,8 @@ import java.util.stream.Collectors;
 
 public class AnnotatedConfigElementTransformer extends AbstractAnnotatedElementTransformer<List<ComponentDefinition>> {
 
-    public AnnotatedConfigElementTransformer(ProcessingEnvironment processingEnv) {
-        super(processingEnv);
+    public AnnotatedConfigElementTransformer(ProcessingEnvironment processingEnv, Set<? extends Element> namedElements) {
+        super(processingEnv, namedElements);
     }
 
     @Override
@@ -42,7 +42,7 @@ public class AnnotatedConfigElementTransformer extends AbstractAnnotatedElementT
                             method.getParameterTypes().stream().map(TypeMirror::toString).collect(Collectors.toList())));
                     definition.addDependency(factoryComponentFullName);
                     definition.addDependencies(method.getParameterTypes().stream()
-                            .map(this::getDependencyNameFromParameter).collect(Collectors.toList()));
+                            .map(typeMirror -> parameterDependencyName(enclosedElement.getSimpleName().toString(), typeMirror, configElement.getSimpleName().toString())).collect(Collectors.toList()));
                     definitionList.add(definition);
                 });
         return definitionList;

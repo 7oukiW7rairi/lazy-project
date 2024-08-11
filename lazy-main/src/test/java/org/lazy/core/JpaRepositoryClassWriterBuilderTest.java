@@ -1,5 +1,6 @@
 package org.lazy.core;
 
+import org.lazy.app.TestUtils;
 import org.lazy.jpa.DummyEntityTest;
 import org.lazy.jpa.JpaRepository;
 import org.lazy.jpa.Query;
@@ -81,20 +82,11 @@ public class JpaRepositoryClassWriterBuilderTest {
         jpaRepositoryClassWriterBuilder = new JpaRepositoryClassWriterBuilder("org.lazy.jpa.JpaRepositoryTest", repositoryElementMock, processingEnvironment);
         ClassWriter classWriter = jpaRepositoryClassWriterBuilder.build();
 
-        Class<?> jpaRepositoryClass = loadClass(classWriter.toByteArray(), "org.lazy.jpa.JpaRepositoryTestImpl");
+        Class<?> jpaRepositoryClass = TestUtils.loadClass(classWriter.toByteArray(), "org.lazy.jpa.JpaRepositoryTestImpl");
         assertNotNull(jpaRepositoryClass);
         assertEquals(jpaRepositoryClass.getSuperclass().getSimpleName(),"AbstractJpaRepository" );
         assertEquals(Arrays.stream(jpaRepositoryClass.getInterfaces()).map(Class::getSimpleName).collect(Collectors.toList()), Collections.singletonList("JpaRepositoryTest" ));
         assertEquals(Arrays.stream(jpaRepositoryClass.getDeclaredMethods()).map(Method::getName).collect(Collectors.toList()), Collections.singletonList("getComponentFromConfig"));
-    }
-
-    private Class<?> loadClass(byte[] byteArray, String className) {
-        return new ClassLoader () {
-            public Class<?> findClass(String name) {
-                return defineClass(name,byteArray,0,byteArray.length);
-            }
-
-        }.findClass(className);
     }
 
 

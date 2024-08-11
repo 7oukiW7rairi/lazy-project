@@ -17,7 +17,7 @@ public class AnnotatedRepositoryElementTransformer extends AbstractAnnotatedElem
     static private final String CLASS_SUFFIX = "Impl";
 
     public AnnotatedRepositoryElementTransformer(ProcessingEnvironment processingEnv) {
-        super(processingEnv);
+        super(processingEnv, Collections.emptySet());
     }
 
     @Override

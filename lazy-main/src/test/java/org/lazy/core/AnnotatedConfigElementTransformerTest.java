@@ -27,7 +27,7 @@ public class AnnotatedConfigElementTransformerTest {
     @BeforeMethod
     public void setUp() {
         ProcessingEnvironment processingEnvironment = Mockito.mock(ProcessingEnvironment.class);
-        configElementTransformer = new AnnotatedConfigElementTransformer(processingEnvironment);
+        configElementTransformer = new AnnotatedConfigElementTransformer(processingEnvironment, Collections.emptySet());
     }
 
     @Test

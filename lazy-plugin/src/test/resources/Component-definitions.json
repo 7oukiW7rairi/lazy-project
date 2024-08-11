@@ -1,0 +1,141 @@
+[
+    {
+        "componentClassName": "org.lazy.core.ConfigComponent",
+        "componentSuperTypes": [],
+        "componentType": "CONFIGURATION",
+        "dependencies": [],
+        "constructor": {
+            "parameterTypes": [],
+            "parameterValues": []
+        },
+        "setters": [],
+        "initMethodName": null,
+        "destroyMethodName": null,
+        "factoryDefinition": null,
+        "componentProxy": null,
+        "qualifier": null
+    },
+    {
+        "componentClassName": "org.lazy.core.ComponentFromConfig",
+        "componentSuperTypes": [],
+        "componentType": "SINGLETON",
+        "dependencies": [
+            "org.lazy.core.ConfigComponent"
+        ],
+        "constructor": null,
+        "setters": [],
+        "initMethodName": null,
+        "destroyMethodName": null,
+        "factoryDefinition": {
+            "factoryComponent": "org.lazy.core.ConfigComponent",
+            "factoryMethod": "getComponentFromConfig",
+            "parameterTypes": []
+        },
+        "componentProxy": null,
+        "qualifier": null
+    },
+    {
+        "componentClassName": "org.lazy.app.MainApplication",
+        "componentSuperTypes": [],
+        "componentType": "APPLICATION",
+        "dependencies": [],
+        "constructor": null,
+        "setters": [],
+        "initMethodName": null,
+        "destroyMethodName": null,
+        "factoryDefinition": null,
+        "componentProxy": null,
+        "qualifier": null
+    },
+    {
+        "componentClassName": "org.lazy.core.DummyComponent",
+        "componentSuperTypes": [
+            "org.lazy.core.DummyInterface"
+        ],
+        "componentType": "SINGLETON",
+        "dependencies": [
+            "org.lazy.core.ComponentFromConfig"
+        ],
+        "constructor": {
+            "parameterTypes": [],
+            "parameterValues": []
+        },
+        "setters": [
+            {
+                "setterName": "setComponent",
+                "parameterType": "org.lazy.core.ComponentFromConfig"
+            }
+        ],
+        "initMethodName": null,
+        "destroyMethodName": null,
+        "factoryDefinition": null,
+        "componentProxy": null,
+        "qualifier": null
+    },
+    {
+        "componentClassName": "org.lazy.core.ComponentWithDependencies",
+        "componentSuperTypes": [],
+        "componentType": "SINGLETON",
+        "dependencies": [
+            "org.lazy.core.ComponentWithoutDependency",
+            "org.lazy.core.DummyInterface"
+        ],
+        "constructor": {
+            "parameterTypes": [
+                "org.lazy.core.ComponentWithoutDependency",
+                "org.lazy.core.DummyInterface"
+            ],
+            "parameterValues": []
+        },
+        "setters": [],
+        "initMethodName": null,
+        "destroyMethodName": null,
+        "factoryDefinition": null,
+        "componentProxy": null,
+        "qualifier": null
+    },
+    {
+        "componentClassName": "org.lazy.core.ComponentWithoutDependency",
+        "componentSuperTypes": [],
+        "componentType": "PROTOTYPE",
+        "dependencies": [],
+        "constructor": {
+            "parameterTypes": [],
+            "parameterValues": []
+        },
+        "setters": [],
+        "initMethodName": null,
+        "destroyMethodName": null,
+        "factoryDefinition": null,
+        "componentProxy": null,
+        "qualifier": null
+    },
+    {
+        "componentClassName": "org.lazy.app.Controller",
+        "componentSuperTypes": [],
+        "componentType": "CONTROLLER",
+        "dependencies": [
+            "org.lazy.core.ComponentWithDependencies"
+        ],
+        "constructor": null,
+        "setters": [],
+        "initMethodName": null,
+        "destroyMethodName": null,
+        "factoryDefinition": null,
+        "componentProxy": null,
+        "qualifier": null
+    },
+    {
+        "componentClassName": "org.lazy.app.Entity",
+        "componentSuperTypes": [],
+        "componentType": "ENTITY",
+        "dependencies": [],
+        "constructor": null,
+        "setters": [],
+        "initMethodName": null,
+        "destroyMethodName": null,
+        "factoryDefinition": null,
+        "componentProxy": null,
+        "qualifier": null
+    }
+]

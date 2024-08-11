@@ -69,7 +69,8 @@ public class AnnotatedElementTransformerTest {
         Mockito.when((List<Element>) elementMock.getEnclosedElements())
                 .thenReturn(Arrays.asList(constructorElement, setterElement, Mockito.mock(Element.class, Mockito.RETURNS_DEEP_STUBS)));
 
-        elementTransformer = new AnnotatedElementTransformer(processingEnvironment);
+                // TODO change the test based on the implementation
+        elementTransformer = new AnnotatedElementTransformer(processingEnvironment, Collections.emptySet());
         ComponentDefinition definition = elementTransformer.transform(elementMock);
 
         assertEquals(definition.getComponentClassName(), "Test.Component.DummyComponent");

@@ -39,7 +39,9 @@ public class ApplicationFilesGenerator {
 
     public void addComponentDefinitions(InputStream inputStream) {
         try {
-            componentDefinitions.addAll(objectMapper.readValue(inputStream, new TypeReference<Set<BaseComponentDefinition>>() {}));
+            componentDefinitions
+                    .addAll(objectMapper.readValue(inputStream, new TypeReference<Set<BaseComponentDefinition>>() {
+                    }));
             inputStream.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -51,22 +53,36 @@ public class ApplicationFilesGenerator {
         for (ComponentDefinition definition : componentDefinitions) {
             definition.getDependencies()
                     .forEach(type -> {
-                        // TODO add support for qualifier component, the type will be split by @
-                        //  if we have a qualifier we check also qualifier in definition
                         String[] dependencyNameParts = type.split("@");
                         if (dependencyNameParts.length > 2) {
                             throw new IllegalArgumentException("Malformed component dependency name " + type);
                         }
-                        Predicate<ComponentDefinition> predicate = componentDefinition -> componentDefinition.getComponentClassName().equals(type) ||
+                        Predicate<ComponentDefinition> predicate = componentDefinition -> componentDefinition
+                                .getComponentClassName().equals(type) ||
                                 componentDefinition.getComponentSuperTypes().contains(type);
                         if (dependencyNameParts.length == 2) {
-                            predicate = componentDefinition -> componentDefinition.getComponentSuperTypes().contains(dependencyNameParts[0]) &&
+                            predicate = componentDefinition -> componentDefinition.getComponentSuperTypes()
+                                    .contains(dependencyNameParts[0]) &&
                                     dependencyNameParts[1].equals(componentDefinition.getQualifier());
                         }
-                        componentDefinitions.stream()
-                                .filter(predicate)
-                                .findFirst().ifPresentOrElse(componentDefinition -> definitionMap.putIfAbsent(type, componentDefinition),
-                                () -> logger.info("No Component definitions found for " + type));
+                        // TODO if there's multiple definition for a dependency, check if they have
+                        // different qualifier and use it to create the mapping
+                        List<BaseComponentDefinition> definitionsFound = componentDefinitions.stream().filter(predicate)
+                                .collect(Collectors.toList());
+                        if (definitionsFound.isEmpty()) {
+                            logger.warn("No Component definitions found for " + type);
+                        } else if (definitionsFound.size() == 1) {
+                            definitionMap.putIfAbsent(type, definitionsFound.get(0));
+                        } else {
+                            definitionsFound.forEach(component -> definitionMap.put(
+                                    component.getQualifier() != null ? type + "@" + component.getQualifier() : type,
+                                    component));
+                        }
+                        /*
+                         * .findFirst().ifPresentOrElse(componentDefinition ->
+                         * definitionMap.putIfAbsent(type, componentDefinition),
+                         * () -> logger.info("No Component definitions found for " + type));
+                         */
                     });
         }
         try {
@@ -89,7 +105,7 @@ public class ApplicationFilesGenerator {
         return componentDefinitions.stream()
                 .filter(definition -> definition.getComponentType() == ComponentType.APPLICATION)
                 .map(BaseComponentDefinition::getComponentClassName)
-                .findFirst().orElse("");//.orElseThrow(() -> new IllegalArgumentException("No Class with main method annotated with @LazyApplication found"));
+                .findFirst().orElse("");
     }
 
     private String getPropertyValueFromList(ComponentType componentType) {

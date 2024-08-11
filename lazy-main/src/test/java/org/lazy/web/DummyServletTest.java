@@ -1,5 +1,7 @@
 package org.lazy.web;
 
+import org.eclipse.jetty.util.annotation.Name;
+import org.lazy.core.ComponentFromConfig;
 import org.lazy.core.ComponentWithoutDependency;
 import org.lazy.web.annotation.Controller;
 import org.lazy.web.annotation.MessageBody;
@@ -8,6 +10,8 @@ import org.lazy.web.annotation.PathVariable;
 import org.lazy.web.annotation.QueryParam;
 
 import javax.inject.Inject;
+import javax.inject.Named;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -20,6 +24,10 @@ public class DummyServletTest extends BaseHttpServlet {
 
     @Inject
     private ComponentWithoutDependency componentWithoutDependency;
+
+    @Named("test")
+    @Inject
+    private ComponentFromConfig componentFromConfig;
 
     public DummyServletTest() {
         super();
@@ -62,5 +70,9 @@ public class DummyServletTest extends BaseHttpServlet {
     @Override
     public void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         super.service(req, resp);
+    }
+
+    public ComponentFromConfig getComponentFromConfig() {
+        return componentFromConfig;
     }
 }

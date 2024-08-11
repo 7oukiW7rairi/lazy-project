@@ -69,9 +69,9 @@ public class DefaultApplicationContext implements ApplicationContext {
     }
 
     private ComponentDefinition getDefinition(String componentName) {
-        return Optional.ofNullable(definitionFactory.getDefinition(componentName))
-                .or(() -> Optional.ofNullable(getEnvironment().getActiveProfile())
-                        .map(profileName -> definitionFactory.getDefinition(componentName + "@" + profileName)))
+        return Optional.ofNullable(getEnvironment().getActiveProfile())
+                .map(profileName -> definitionFactory.getDefinition(componentName + "@" + profileName))
+                .or(() -> Optional.ofNullable(definitionFactory.getDefinition(componentName)))
                 .orElseThrow(() -> new CoreException("No Component definition found for " + componentName));
     }
 

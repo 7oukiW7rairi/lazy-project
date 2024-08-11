@@ -34,6 +34,25 @@
     "componentProxy": null,
     "qualifier": null
   },
+  "org.lazy.core.ComponentFromConfig@test": {
+    "componentClassName": "org.lazy.core.ComponentFromConfig",
+    "componentSuperTypes": [],
+    "componentType": "SINGLETON",
+    "dependencies": [
+      "org.lazy.core.ConfigComponent"
+    ],
+    "constructor": null,
+    "setters": [],
+    "initMethodName": null,
+    "destroyMethodName": null,
+    "factoryDefinition": {
+      "factoryComponent": "org.lazy.core.ConfigComponent",
+      "factoryMethod": "getComponentFromConfig",
+      "parameterTypes": []
+    },
+    "componentProxy": null,
+    "qualifier": null
+  },
   "org.lazy.core.DummyInterface": {
     "componentClassName": "org.lazy.core.DummyComponent",
     "componentSuperTypes": [

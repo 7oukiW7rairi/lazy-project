@@ -1,6 +1,5 @@
 package org.lazy.app;
 
-import org.lazy.app.DefaultWebApplicationContext;
 import org.lazy.common.CommonProperties;
 import org.lazy.core.Environment;
 import org.lazy.web.DummyServletTest;
@@ -26,6 +25,7 @@ public class DefaultWebApplicationContextTest {
         applicationContext.getWebComponent(dummyServletTest);
 
         assertNotNull(dummyServletTest.getComponentWithoutDependency());
+        assertNotNull(dummyServletTest.getComponentFromConfig());
 
     }
 
