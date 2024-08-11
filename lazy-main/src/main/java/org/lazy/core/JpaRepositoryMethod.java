@@ -108,23 +108,25 @@ public class JpaRepositoryMethod {
                 '}';
     }
 
-    private enum PrimitiveType {
+    public static enum PrimitiveType {
 
-        INT("int", "I"),
-        LONG("long", "J"),
-        SHORT("short", "S"),
-        CHAR("char", "C"),
-        BYTE("byte", "B"),
-        BOOLEAN("boolean", "Z"),
-        FLOAT("float", "F"),
-        DOUBLE("double", "D");
+        INT("int", "I", "java/lang/Integer"),
+        LONG("long", "J", "java/lang/Long"),
+        SHORT("short", "S", "java/lang/Short"),
+        CHAR("char", "C", "java/lang/Character"),
+        BYTE("byte", "B", "java/lang/Byte"),
+        BOOLEAN("boolean", "Z", "java/lang/Boolean"),
+        FLOAT("float", "F", "java/lang/Float"),
+        DOUBLE("double", "D", "java/lang/Double");
 
         private final String userFormat;
         private final String byteCodeFormat;
+        private final String wrapperClass;
 
-        PrimitiveType(String userFormat, String byteCodeFormat) {
+        PrimitiveType(String userFormat, String byteCodeFormat, String wrapperClass) {
             this.userFormat = userFormat;
             this.byteCodeFormat = byteCodeFormat;
+            this.wrapperClass = wrapperClass;
         }
 
         public static boolean isPrimitive(String userFormat) {
@@ -144,5 +146,10 @@ public class JpaRepositoryMethod {
         public String getByteCodeFormat() {
             return byteCodeFormat;
         }
+
+        public String getWrapperClass() {
+            return wrapperClass;
+        }
+        
     }
 }

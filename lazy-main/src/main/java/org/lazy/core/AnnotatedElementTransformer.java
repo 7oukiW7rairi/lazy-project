@@ -78,7 +78,7 @@ public class AnnotatedElementTransformer extends AbstractAnnotatedElementTransfo
                 .map(this::getDependencyNameFromParameter)
                 .collect(Collectors.toList())); */
         if (definition.getComponentProxy() == ComponentProxy.TRANSACTIONAL) {
-            definition.addDependency("org.lazy.jpa.TransactionManager");
+            definition.addDependency("org.lazy.jpa.LocalTransactionManager");
         }
         return definition;
     }

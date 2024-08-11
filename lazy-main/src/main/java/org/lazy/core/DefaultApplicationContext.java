@@ -1,6 +1,7 @@
 package org.lazy.core;
 
 import org.lazy.common.ComponentDefinition;
+import org.lazy.common.ComponentType;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -37,7 +38,8 @@ public class DefaultApplicationContext implements ApplicationContext {
             } else {
                 // TODO add definition map so we don't repeat getting a definition twice
                 ComponentDefinition currentDefinition = getDefinition(currentComponentName);
-                if (initialisedComponents.containsKey(currentDefinition.getComponentClassName())) {
+                // TODO better and more accurate implementation for circular dependencies
+                if (initialisedComponents.containsKey(currentDefinition.getComponentClassName()) && currentDefinition.getComponentType() != ComponentType.CONFIGURATION) {
                     throw new CoreException("Circular dependencies for Component " + currentDefinition.getComponentClassName());
                 }
                 if (!currentDefinition.getDependencies().isEmpty()) {
